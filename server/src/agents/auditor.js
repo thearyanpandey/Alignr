@@ -66,22 +66,6 @@ export const analyzeFit = async (userResumeJson, jobDescriptionText) => {
 
         console.log("---Agent A Finished---");
         return analysisJson;
-        // //calling Gemini
-        // const result = await genAI.models.generateContent({ 
-        //     model: "gemini-2.5-flash",
-        //     contents: prompt,
-        //     //contents: [{ role: "user", parts: [{ text: prompt }] }],
-        //     config: {
-        //         responseMimeType: "application/json" 
-        //     }
-        // });
-
-        // console.log("resopnse from auditor.js : " + result);
-        // // const response = await result.candidates[0].content.parts[0];
-        // // const text = response.text;
-
-        // console.log("---Agent A Finished---");
-        // //return JSON.parse(text);
 
     } catch (error) {
         console.error("Agent A Error: ", error);

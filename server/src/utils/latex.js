@@ -14,12 +14,17 @@ export const generatePDF = (data) => {
         const templatePath = path.join(__dirname, "../templates/master.tex");
         let templateContent = fs.readFileSync(templatePath, "utf8");
 
+        const clean = (str) => {
+            if(!str) return "";
+            return str.replace(/([&%$#_])/g, "\\$1")
+        };
+
         //2. Injecting Data (simple strings for now)
         templateContent = templateContent
-            .replace("<<NAME>>", data.name || "TEST USER")
-            .replace("<<EMAIL>>", data.email || "test@example.com")
-            .replace("<<PHONE>>", data.phone || "1234567890")
-            .replace("<<LINKEDIN>>", data.linkedin || "linkedin.com/in/test")
+            .replace("<<NAME>>", clean(data.name))
+            .replace("<<EMAIL>>", clean(data.email))
+            .replace("<<PHONE>>", clean(data.phone))
+            .replace("<<LINKEDIN>>", clean(data.linkedin))
             .replace("<<EXPERIENCE_CONTENT>>", data.experience || "No experience provided")
             .replace("<<SKILLS_CONTENT>>", data.skills || "No skills provided.");
 
