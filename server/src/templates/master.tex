@@ -1,0 +1,31 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{left=0.75in, top=0.6in, right=0.75in, bottom=0.6in}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% --- FORMATTING ---
+\titleformat{\section}{\large\bfseries\uppercase}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{10pt}{5pt}
+
+\begin{document}
+
+% --- HEADER ---
+\begin{center}
+    {\Huge \textbf{<<NAME>>}} \\ \vspace{2mm}
+    <<EMAIL>> | <<PHONE>> | <<LINKEDIN>>
+\end{center}
+
+\vspace{5mm}
+
+% --- EXPERIENCE SECTION ---
+\section{Experience}
+<<EXPERIENCE_CONTENT>>
+
+% --- SKILLS SECTION ---
+\section{Skills}
+<<SKILLS_CONTENT>>
+
+\end{document}
