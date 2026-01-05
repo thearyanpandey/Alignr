@@ -49,36 +49,45 @@ app.post("/test-audit", async(req,res) => {
 });
 
 app.post("/generate-resume", async(req,res) => {
+
+    if (!req.body.resume || !req.body.jobDescription) {
+        console.log("Blocked invalid request.");
+        return res.status(400).json({ error: "No data provided" });
+    }
+    
     try {
         const {resume, jobDescription} = req.body;
 
-        if(!resume || !jobDescription) return res.status(400).send("Missing data");
+        if (!resume || !jobDescription) {
+            console.warn("Blocked request with missing data.");
+            return res.status(400).json({ error: "Resume and Job Description are required." });
+        }
+
+        console.log("Received Request for:", resume.personalInfo?.name || "Unknown");
 
         console.log("1. Starting Audit...");
         const auditResults = await analyzeFit(resume, jobDescription);
 
         console.log("2. Drafting Content....");
-        const rewrittenContent = await writeResumeContent(resume, jobDescription, auditResults);
-        console.log("DEBUG: Agent B Response:", JSON.stringify(rewrittenContent, null, 2));
+        const aiGeneratedContent = await writeResumeContent(resume, jobDescription, auditResults);
         
+        if (!aiGeneratedContent) {
+            throw new Error("AI Writer returned undefined. Check writer.js exports.");
+        }
+        console.log("DEBUG: AI Content Keys:", Object.keys(aiGeneratedContent));
+
         console.log("3. Compiling PDF...");
-        //Combining the user's personal info with the AI's rewritten content 
-        const pdfData = {
-            name: resume.personal_info.name,
-            email: resume.personal_info.email,
-            phone: resume.personal_info.phone,
-            linkedIn: resume.personal_info.linkedin,
-            experience_content: rewrittenContent.experience_content,
-            skills_content: rewrittenContent.skills_content
-        };
+        const pdfData = await generatePDF(resume, aiGeneratedContent);
 
         const pdfPath = await generatePDF(pdfData);
         console.log("4. Done!");
-        res.download(pdfPath, "Optimized_Resume.pdf");
+        res.download(pdfPath, "Alignr_Resume.pdf");
 
     } catch (error) {
         console.error("Chain Error:", error);
-        res.status(500).json({error: "Generation Failed"})
+        if (!res.headersSent) {
+            res.status(500).json({ error: "Generation Failed: " + error.message });
+        }
     }
 })
 

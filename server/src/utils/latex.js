@@ -7,38 +7,148 @@ import { dirname } from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export const generatePDF = (data) => {
+const clean = (str) => {
+    if(!str) return "";
+    return String(str).replace(/([&%$#_])/g, "\\$1");
+};
+
+//function that generates experience LaTeX
+const buildExperienceLatex = (items) => {
+    if(!items || items.length === 0) return "No experience provided.";
+
+    const header = "\\section{Experience}\n";
+    
+    const content = items.map(item => `
+        \\begin{twocolentry}{
+            \\textit{${clean(item.location)}}    
+            \\textit{${clean(item.date)}}
+        }
+        \\textbf{${clean(item.role)}}
+        \\textit{${clean(item.company)}}
+        \\end{twocolentry}
+
+        \\vspace{0.10 cm}
+        \\begin{onecolentry}
+        \\begin{highlights}
+            ${item.bullets.map(b => `\\item ${clean(b)}`).join("\n")}
+        \\end{highlights}
+        \\end{onecolentry}
+        \\vspace{0.2 cm}
+        `).join("\n");
+
+        return header + content;
+};
+
+//function that generates project LaTeX
+const buildProjectsLatex = (items) => {
+    if(!items || items.length === 0) return "";
+
+    const header = "\\section{Projects}\n";
+
+    const content =  items.map(item => 
+    `\\begin{twocolentry}{
+        \\textit{${clean(item.link)}}
+    }
+    \\textbf{${clean(item.name)}}
+    \\end{twocolentry}
+
+    \\vspace{0.10 cm}
+    \\begin{onecolentry}
+    \\begin{highlights}
+        ${item.bullets.map(b => `\\item ${clean(b)}`).join("\n")}
+    \\end{highlights}
+    \\end{onecolentry}
+    \\vspace{0.2 cm}`
+    ).join("\n");
+
+    return header + content;
+}
+
+//function for education LaTeX
+const buildEducationLatex = (educationList) => {
+
+    console.log("Debug: Building Education with:", JSON.stringify(educationList));
+
+    if(!educationList || !Array.isArray(educationList) || educationList.length === 0) return "\\begin{onecolentry}No education details provided.\\end{onecolentry}";
+
+    const header = "\\section{Education}\n"; 
+
+    const content =  educationList.map(edu => `
+    \\begin{twocolentry}{
+        \\textit{${clean(edu.duration)}}
+    }
+    \\textbf{${clean(edu.institution)}}
+    \\textit{${clean(edu.degree)}}
+    \\end{twocolentry}
+    \\vspace{0.10 cm}
+    \\begin{onecolentry}
+    \\begin{highlights}
+        \\item Score: ${clean(edu.gpa || edu.percentage)}
+    \\end{highlights}
+    \\end{onecolentry}
+    `).join("\n\n");
+
+    return header + content;
+};
+
+
+
+export const generatePDF = (userData, aiContent) => {
     return new Promise((resolve, reject) => {
+
+        if (!aiContent || !aiContent.experience) {
+            console.error("CRITICAL ERROR: Data missing in generatePDF");
+            console.error("aiContent received:", aiContent);
+            return reject(new Error("AI Generation failed to produce content."));
+        }
 
         //Read the template
         const templatePath = path.join(__dirname, "../templates/master.tex");
-        let templateContent = fs.readFileSync(templatePath, "utf8");
+        let template = fs.readFileSync(templatePath, "utf8");
 
-        const clean = (str) => {
-            if(!str) return "";
-            return str.replace(/([&%$#_])/g, "\\$1")
-        };
+        //generating section programmatically
+        const expSection = buildExperienceLatex(aiContent.experience);
+        const projSection = buildProjectsLatex(aiContent.projects);
+        const eduSection = buildEducationLatex(userData.education);
 
-        console.log("hii from generate pdf :", Object.keys(data));
+        console.log("hii from generate pdf :", Object.keys(userData));
 
-        const expContent = data.experience_content || data.experience || "Error: AI generated no experience content.";
-        const skillsContent = data.skills_content || data.skills || "Error: AI generated no skills content.";
-
+        //Formatted Skills
+        const skillsSection = `
+            \\begin{onecolentry}
+                \\textbf{Languages:} ${clean(aiContent.skills.languages)}
+            \\end{onecolentry}
+            \\vspace{0.1cm}
+            \\begin{onecolentry}
+                \\textbf{Frameworks:} ${clean(aiContent.skills.frameworks)}
+            \\end{onecolentry}
+            \\vspace{0.1 cm}
+            \\begin{onecolentry}
+            \\textbf{Tools:} ${clean(aiContent.skills.tools)}
+            \\end{onecolentry}
+        `
 
         //2. Injecting Data (simple strings for now)
-        templateContent = templateContent
-            .replace("<<NAME>>", clean(data.name))
-            .replace("<<EMAIL>>", clean(data.email))
-            .replace("<<PHONE>>", clean(data.phone))
-            .replace("<<LINKEDIN>>", clean(data.linkedin))
-            .replace("<<EXPERIENCE_CONTENT>>", expContent)
-            .replace("<<SKILLS_CONTENT>>", skillsContent);
+        template = template
+            .replace("<<NAME>>", clean(userData.personalInfo.name))
+            .replace(/<<EMAIL>>/g, clean(userData.personalInfo.email))
+            .replace(/<<PHONE>>/g, clean(userData.personalInfo.phone))
+            .replace("<<LOCATION>>", clean(userData.personalInfo.location))
+            .replace("<<LINKEDIN_USER>>", clean(userData.personalInfo.profiles.linkedin))
+            .replace("<<LINKEDIN_URL>>", `https://linkedin.com/in/${clean(userData.personalInfo.profiles.linkedin)}`)
+            .replace("<<GITHUB_USER>>", clean(userData.personalInfo.profiles.github))
+            .replace("<<GITHUB_URL>>", `https://github.com/${clean(userData.personalInfo.profiles.github)}`)
+            
+            .replace("<<EDUCATION_SECTION>>", eduSection)
+            .replace("<<EXPERIENCE_SECTION>>", expSection)
+            .replace("<<PROJECTS_SECTION>>", projSection)
+            .replace("<<SKILLS_SECTION>>", skillsSection);
 
         //3 Output paths
         //we'll use a timestamp to ensure unique filenames
         const fileId = Date.now();
         const outputDir = path.join(__dirname, "../../output");
-        const tempTexPath = path.join(outputDir, `${fileId}.text`);
+        const tempTex = path.join(outputDir, `${fileId}.tex`);
 
         //Ensure output dir exists
         if(!fs.existsSync(outputDir)){
@@ -46,10 +156,10 @@ export const generatePDF = (data) => {
         }
 
         //4. Write the populated .tex file to disk
-        fs.writeFileSync(tempTexPath, templateContent);
+        fs.writeFileSync(tempTex, template);
 
         //5. command to put the PDF
-        const command = `pdflatex -output-directory="${outputDir}" -intercation=nonstopmode "${tempTexPath}"`;
+        const command = `pdflatex -output-directory="${outputDir}" -interaction=nonstopmode "${tempTex}"`;
 
         console.log(`Compiling PDF: ${fileId}...`);
 
