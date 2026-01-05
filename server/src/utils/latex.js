@@ -19,14 +19,20 @@ export const generatePDF = (data) => {
             return str.replace(/([&%$#_])/g, "\\$1")
         };
 
+        console.log("hii from generate pdf :", Object.keys(data));
+
+        const expContent = data.experience_content || data.experience || "Error: AI generated no experience content.";
+        const skillsContent = data.skills_content || data.skills || "Error: AI generated no skills content.";
+
+
         //2. Injecting Data (simple strings for now)
         templateContent = templateContent
             .replace("<<NAME>>", clean(data.name))
             .replace("<<EMAIL>>", clean(data.email))
             .replace("<<PHONE>>", clean(data.phone))
             .replace("<<LINKEDIN>>", clean(data.linkedin))
-            .replace("<<EXPERIENCE_CONTENT>>", data.experience || "No experience provided")
-            .replace("<<SKILLS_CONTENT>>", data.skills || "No skills provided.");
+            .replace("<<EXPERIENCE_CONTENT>>", expContent)
+            .replace("<<SKILLS_CONTENT>>", skillsContent);
 
         //3 Output paths
         //we'll use a timestamp to ensure unique filenames

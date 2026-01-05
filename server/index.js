@@ -59,7 +59,8 @@ app.post("/generate-resume", async(req,res) => {
 
         console.log("2. Drafting Content....");
         const rewrittenContent = await writeResumeContent(resume, jobDescription, auditResults);
-
+        console.log("DEBUG: Agent B Response:", JSON.stringify(rewrittenContent, null, 2));
+        
         console.log("3. Compiling PDF...");
         //Combining the user's personal info with the AI's rewritten content 
         const pdfData = {

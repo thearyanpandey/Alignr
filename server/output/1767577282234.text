@@ -1,0 +1,33 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{left=0.75in, top=0.6in, right=0.75in, bottom=0.6in}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% --- FORMATTING ---
+\titleformat{\section}{\large\bfseries\uppercase}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{10pt}{5pt}
+
+\begin{document}
+
+% --- HEADER ---
+\begin{center}
+    {\Huge \textbf{Alex Dev}} \\ \vspace{2mm}
+    alex@test.com | 555-0199 | 
+\end{center}
+
+\vspace{5mm}
+
+% --- EXPERIENCE SECTION ---
+\section{Experience}
+\textbf{Backend Dev} at TechStart
+Engineered and developed robust APIs utilizing Node.js for scalable backend services.
+Managed and maintained MongoDB databases, ensuring data integrity and accessibility for application services.
+
+% --- SKILLS SECTION ---
+\section{Skills}
+Node.js, MongoDB, JavaScript, React, SQL
+
+\end{document}
