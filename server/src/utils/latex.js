@@ -12,7 +12,6 @@ const clean = (str) => {
     return String(str).replace(/([&%$#_])/g, "\\$1");
 };
 
-//function that generates experience LaTeX
 const buildExperienceLatex = (items) => {
     if(!items || items.length === 0) return "No experience provided.";
 
@@ -21,50 +20,50 @@ const buildExperienceLatex = (items) => {
     const content = items.map(item => `
         \\begin{twocolentry}{
             \\textit{${clean(item.location)}}    
+            
             \\textit{${clean(item.date)}}
         }
-        \\textbf{${clean(item.role)}}
-        \\textit{${clean(item.company)}}
+            \\textbf{${clean(item.role)}}
+            
+            \\textit{${clean(item.company)}}
         \\end{twocolentry}
 
         \\vspace{0.10 cm}
         \\begin{onecolentry}
-        \\begin{highlights}
-            ${item.bullets.map(b => `\\item ${clean(b)}`).join("\n")}
-        \\end{highlights}
+            \\begin{highlights}
+                ${item.bullets.map(b => `\\item ${clean(b)}`).join("\n                ")}
+            \\end{highlights}
         \\end{onecolentry}
-        \\vspace{0.2 cm}
-        `).join("\n");
+        \\vspace{0.2 cm}`).join("\n");
 
         return header + content;
 };
 
-//function that generates project LaTeX
 const buildProjectsLatex = (items) => {
     if(!items || items.length === 0) return "";
 
     const header = "\\section{Projects}\n";
 
-    const content =  items.map(item => 
-    `\\begin{twocolentry}{
-        \\textit{${clean(item.link)}}
-    }
-    \\textbf{${clean(item.name)}}
-    \\end{twocolentry}
+    const content =  items.map(item => `
+        \\begin{twocolentry}{
+            
+            
+            \\textit{{}}
+        }
+            \\textbf{${clean(item.name)} $|$ \\href{${item.link}}{Repository}}
+        \\end{twocolentry}
 
-    \\vspace{0.10 cm}
-    \\begin{onecolentry}
-    \\begin{highlights}
-        ${item.bullets.map(b => `\\item ${clean(b)}`).join("\n")}
-    \\end{highlights}
-    \\end{onecolentry}
-    \\vspace{0.2 cm}`
-    ).join("\n");
+        \\vspace{0.10 cm}
+        \\begin{onecolentry}
+            \\begin{highlights}
+                ${item.bullets.map(b => `\\item ${clean(b)}`).join("\n                ")}
+            \\end{highlights}
+        \\end{onecolentry}
+        \\vspace{0.2 cm}`).join("\n");
 
     return header + content;
 }
 
-//function for education LaTeX
 const buildEducationLatex = (educationList) => {
 
     console.log("Debug: Building Education with:", JSON.stringify(educationList));
@@ -74,23 +73,24 @@ const buildEducationLatex = (educationList) => {
     const header = "\\section{Education}\n"; 
 
     const content =  educationList.map(edu => `
-    \\begin{twocolentry}{
-        \\textit{${clean(edu.duration)}}
-    }
-    \\textbf{${clean(edu.institution)}}
-    \\textit{${clean(edu.degree)}}
-    \\end{twocolentry}
-    \\vspace{0.10 cm}
-    \\begin{onecolentry}
-    \\begin{highlights}
-        \\item Score: ${clean(edu.gpa || edu.percentage)}
-    \\end{highlights}
-    \\end{onecolentry}
-    `).join("\n\n");
+        \\begin{twocolentry}{
+            \\textit{${clean(edu.duration)}}
+        }
+            \\textbf{${clean(edu.institution)}}
+
+            \\textit{${clean(edu.degree)}}
+        \\end{twocolentry}
+
+        \\vspace{0.10 cm}
+        \\begin{onecolentry}
+            \\begin{highlights}
+                \\item ${edu.gpa ? `CGPA: ${clean(edu.gpa)}` : `Percentage: ${clean(edu.percentage)}`}
+            \\end{highlights}
+        \\end{onecolentry}
+        \\vspace{0.2 cm}`).join("\n");
 
     return header + content;
 };
-
 
 
 export const generatePDF = (userData, aiContent) => {

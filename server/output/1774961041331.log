@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.1.3)  5 JAN 2026 11:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.1.3)  31 MAR 2026 12:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**/mnt/c/Users/aryan/rust/alignr/server/output/1767611711755.tex
-(/mnt/c/Users/aryan/rust/alignr/server/output/1767611711755.tex
+**/mnt/c/Users/aryan/rust/alignr/server/output/1774961041331.tex
+(/mnt/c/Users/aryan/rust/alignr/server/output/1774961041331.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -467,8 +467,8 @@ LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-No file 1767611711755.aux.
-\openout1 = `1767611711755.aux'.
+No file 1774961041331.aux.
+\openout1 = `1774961041331.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 146.
 LaTeX Font Info:    ... okay on input line 146.
@@ -576,15 +576,26 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 188.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 188.
- [1
+
+Overfull \hbox (44.21451pt too wide) in paragraph at lines 255--255
+ []\OT1/lmr/m/it/10 github.com/thearyanpandey/kevenca-
+ []
+
+
+Overfull \hbox (33.48105pt too wide) in paragraph at lines 269--269
+ []\OT1/lmr/m/it/10 github.com/thearyanpandey/apple-
+ []
+
+[1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/
 dvips/lm/lm-rm.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/fontawesome5/
 fa5free2.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/fontawesome5/fa5fre
 e1.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/fontawesome5/fa5brands0.e
-nc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}] 
+nc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}]
+
 enddocument/afterlastpage: lastpage setting LastPage.
-(/mnt/c/Users/aryan/rust/alignr/server/output/1767611711755.aux)
+(/mnt/c/Users/aryan/rust/alignr/server/output/1774961041331.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -612,8 +623,8 @@ ands-Regular.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/fontawesome5
 m/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/tex
 mf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmri
 10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb>
-Output written on /mnt/c/Users/aryan/rust/alignr/server/output/1767611711755.pd
-f (1 page, 166049 bytes).
+Output written on /mnt/c/Users/aryan/rust/alignr/server/output/1774961041331.pd
+f (1 page, 167881 bytes).
 PDF statistics:
  79 PDF objects out of 1000 (max. 8388607)
  59 compressed objects within 1 object stream

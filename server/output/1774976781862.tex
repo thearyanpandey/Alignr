@@ -1,0 +1,296 @@
+\documentclass[10pt, a4paper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=2 cm, % seperation between body and page edge from the top
+    bottom=2 cm, % seperation between body and page edge from the bottom
+    left=2 cm, % seperation between body and page edge from the left
+    right=2 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging 
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={Aryan Pandey's CV},
+    pdfauthor={Aryan Pandey},
+    pdfcreator={LaTeX with RenderCV},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    % \usepackage[T1]{fontenc} % this breaks sb2nov
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+
+
+% Some settings:
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0cm} % set column seperation
+\makeatletter
+\let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
+
+\makeatother
+\pagestyle{customFooterStyle}
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.3 cm
+}{
+    % bottom space:
+    0.2 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\circ$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
+
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0.2 cm + 0.00001 cm
+    }{
+        0.2 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+} % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+}%
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+% new command for external links:
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
+
+% --- ADDED MISSING DEFINITIONS HERE ---
+\newcommand{\AND}{\unskip
+    \cleaders\copy\ANDbox\hskip\wd\ANDbox
+    \ignorespaces
+}
+\newsavebox\ANDbox
+\sbox\ANDbox{}
+% --------------------------------------
+
+\begin{document}
+    
+    % --- HEADER SECTION ---
+    \begin{header}
+        \textbf{\fontsize{24 pt}{24 pt}\selectfont Aryan Pandey}
+
+        \vspace{0.3 cm}
+
+        \normalsize
+        \mbox{{\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm} Delhi, India}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{mailto:aryanaquapandey@gmail.com}{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}aryanaquapandey@gmail.com}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{tel:+91 8285414595}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+91 8285414595}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://linkedin.com/in/thearyanpandey}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}thearyanpandey}}%
+        \kern 0.25 cm%
+        \AND%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{https://github.com/thearyanpandey}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}thearyanpandey}}%
+    \end{header}
+
+    \vspace{0.3 cm - 0.3 cm}
+
+    % --- EDUCATION SECTION ---
+    \section{Education}
+
+    \begin{twocolentry}{
+        \textit{Sept 2023 -- May 2027}
+    }
+    \textbf{Delhi Technological University}
+    \textit{B.Tech in Production Engineering}
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+    \begin{highlights}
+        \item Score: 8.25/10
+    \end{highlights}
+    \end{onecolentry}
+    
+
+
+    \begin{twocolentry}{
+        \textit{2022}
+    }
+    \textbf{Panchsheel Balak Inter College}
+    \textit{Class XII}
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+    \begin{highlights}
+        \item Score: 91.08\%
+    \end{highlights}
+    \end{onecolentry}
+    
+
+    % --- EXPERIENCE SECTION ---
+    \section{Experience}
+
+        \begin{twocolentry}{
+            \textit{Delhi, India}    
+            \textit{Oct 2024 -- Dec 2024}
+        }
+        \textbf{Frontend Development Intern}
+        \textit{TechStart}
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+        \begin{highlights}
+            \item Engineered responsive and high-performance landing pages using React and Tailwind CSS, directly aligning with core front-end requirements.
+\item Optimized SEO scores and web accessibility by 20\% through strategic semantic HTML structure and asset optimization.
+\item Collaborated with the development team to debug front-end components and ensure seamless UI/UX transitions across different device viewports.
+        \end{highlights}
+        \end{onecolentry}
+        \vspace{0.2 cm}
+        
+
+        \begin{twocolentry}{
+            \textit{Delhi, India}    
+            \textit{Jan 2025 -- Mar 2025}
+        }
+        \textbf{Software Development Freelancer}
+        \textit{Freelance}
+        \end{twocolentry}
+
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+        \begin{highlights}
+            \item Architected a cross-platform Sudoku puzzle application using Dart and Flutter, focusing on clean code and efficient state management.
+\item Developed complex dynamic grid generation and recursive backtracking algorithms for real-time difficulty adjustment.
+\item Managed the full software development lifecycle (SDLC), successfully publishing the application to the Play Store and achieving over 500 organic downloads.
+        \end{highlights}
+        \end{onecolentry}
+        \vspace{0.2 cm}
+        
+
+    % --- PROJECTS SECTION ---
+    \section{Projects}
+\begin{twocolentry}{
+        \textit{github.com/thearyanpandey/repo}
+    }
+    \textbf{Kevenca Web Platform Clone}
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+    \begin{highlights}
+        \item Developed a pixel-perfect clone of the Kevenca landing page utilizing React and TypeScript to ensure type safety and code scalability.
+\item Implemented advanced optimization techniques including Lazy Loading and code splitting to significantly reduce initial bundle size and improve load times.
+    \end{highlights}
+    \end{onecolentry}
+    \vspace{0.2 cm}
+\begin{twocolentry}{
+        \textit{github.com/thearyanpandey/repo}
+    }
+    \textbf{Apple TV Animated Interface}
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+    \begin{highlights}
+        \item Engineered high-fidelity web animations and smooth transitions using GSAP and React to mirror premium streaming platform experiences.
+\item Prioritized cross-browser compatibility and responsive design principles to ensure consistent visual performance across desktop and mobile devices.
+    \end{highlights}
+    \end{onecolentry}
+    \vspace{0.2 cm}
+
+    % --- SKILLS SECTION ---
+    \section{Technologies}
+    
+            \begin{onecolentry}
+                \textbf{Languages:} JavaScript (ES6+), HTML5, CSS3, Java, Dart
+            \end{onecolentry}
+            \vspace{0.1cm}
+            \begin{onecolentry}
+                \textbf{Frameworks:} React, Node.js, Express.js, Flutter, Tailwind CSS
+            \end{onecolentry}
+            \vspace{0.1 cm}
+            \begin{onecolentry}
+            \textbf{Tools:} Git, GitHub, Postman (API Testing), RESTful APIs, Android Studio
+            \end{onecolentry}
+        
+
+\end{document}

@@ -51,8 +51,8 @@ app.post("/test-audit", async(req,res) => {
 app.post("/generate-resume", async(req,res) => {
 
     if (!req.body.resume || !req.body.jobDescription) {
-        console.log("Blocked invalid request.");
-        return res.status(400).json({ error: "No data provided" });
+        console.warn("⚠️ Blocked a request with missing data.");
+            return res.status(400).json({ error: "Resume and Job Description are required." });
     }
     
     try {
@@ -71,15 +71,15 @@ app.post("/generate-resume", async(req,res) => {
         console.log("2. Drafting Content....");
         const aiGeneratedContent = await writeResumeContent(resume, jobDescription, auditResults);
         
-        if (!aiGeneratedContent) {
-            throw new Error("AI Writer returned undefined. Check writer.js exports.");
+        if (!aiGeneratedContent || !aiGeneratedContent.experience) {
+            console.error("AI Writer failed to format data correctly")
+            return res.status(500).json({ error: "AI failed to generate content." });
         }
         console.log("DEBUG: AI Content Keys:", Object.keys(aiGeneratedContent));
 
         console.log("3. Compiling PDF...");
-        const pdfData = await generatePDF(resume, aiGeneratedContent);
+        const pdfPath = await generatePDF(resume, aiGeneratedContent);
 
-        const pdfPath = await generatePDF(pdfData);
         console.log("4. Done!");
         res.download(pdfPath, "Alignr_Resume.pdf");
 
